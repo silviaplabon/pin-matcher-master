@@ -16,7 +16,7 @@
             <div class="col-md-6">
                 <div class="pin-generator half-width">
                     <input id="generateInput" class="form-control" type="text">
-                    <button onclick="randomValue()" class="generate-btn">Generate Pin</button>
+                    <button onclick="randomValue()" class="generate-btn" id="generatePin">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -40,7 +40,7 @@
                                 <div class="button" onclick="inputreader('3')">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button" onclick="inputdecrease()"></div>
+                                <div class="button" onclick="inputdecrease()"><</div>
                                 <div class="button" onclick="inputreader('0')">0</div>
                                 <div class="button" onclick="inputzero()">C</div>
                             </div>
@@ -60,21 +60,20 @@
             </div>
         </div>
         <script>
-            var count = 3;
-            displaynone();
-            function randomValue() {
+            var count = 3; 
+            document.getElementById('generatePin').addEventListener('mouseenter',function(){
                 displaynone();
-                var minm = 1000;
-                var maxm = 9999;
-                var answer = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
+            })
+            function randomValue() {//generating random value for generating input
+                var answer=Math.floor(1000 + (Math.random()*9000));
                 document.getElementById('generateInput').value = answer;
             }
             function displaynone() {
                 document.getElementById('success').style.display = "none";
                 document.getElementById('failure').style.display = "none";
             }
-            function displayBlock(id){
-                document.getElementById(id).style.display = "block";
+            function displayBlock(id,value){
+                document.getElementById(id).style.display = value;
             }
             function inputreader(value) {
                 displaynone();
@@ -84,8 +83,13 @@
             }
             function inputdecrease() {
                 var input = document.getElementById('inputPin').value;
-                var answer = Number(input.slice(0, input.length - 1));
-                document.getElementById('inputPin').value = answer;
+                var answer = input.slice(0, input.length - 1);
+                if(answer.length>0){
+                    document.getElementById('inputPin').value = answer;
+                }
+                else{
+                    document.getElementById('inputPin').value = "";
+                }
             }
             function inputzero() {
                 document.getElementById('inputPin').value = "";
@@ -95,10 +99,10 @@
                     const input1 = document.getElementById('generateInput').value;
                     const input2 = document.getElementById('inputPin').value;
                     if (input1 == input2) {
-                        displayBlock('success');
+                        displayBlock('success',"block");
                     }
                     else {
-                        displayBlock('failure');
+                        displayBlock('failure',"block");
                     }
                     count = count - 1;
                     document.getElementById('tryingnumber').innerText = count;
@@ -108,6 +112,9 @@
                     document.getElementById('tryingnumber').innerText = 0;
                 }
             }
+            // var minm = 1000;
+                // var maxm = 9999;
+                // var answer = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
         </script>
 </body>
 </html>
