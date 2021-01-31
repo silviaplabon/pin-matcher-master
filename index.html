@@ -16,12 +16,12 @@
             <div class="col-md-6">
                 <div class="pin-generator half-width">
                     <input id="generateInput" class="form-control" type="text">
-                    <button id="generatePin" class="generate-btn">Generate Pin</button>
+                    <button onclick="randomValue()" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width inputsec">
-                    <input id="inputPin" class="form-control" type="text">
+                    <input id="inputPin" class="form-control" type="text" value="">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
@@ -45,7 +45,8 @@
                                 <div class="button" onclick="inputzero()">C</div>
                             </div>
                             <div>
-                                <button type="submit" id="submitBtn" class="submit-btn">Submit</button>
+                                <button onclick="submitBtn()" type="submit" id="submitBtn"
+                                    class="submit-btn">Submit</button>
                                 <p class="action-left"><span id="tryingnumber">3</span> try left</p>
                             </div>
                         </div>
@@ -54,46 +55,33 @@
             </div>
 
             <div class="notify-section">
-                <p id="failure" class="notify">❌ Pin Didn't Match, Please try again silvia</p>
+                <p id="failure" class="notify">❌ Pin Didn't Match, Please try again</p>
                 <p id="success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
             </div>
         </div>
         <script>
-            document.getElementById('generatePin').addEventListener('click', function () {
-                document.getElementById('generateInput').value = gfg();
-            })
-            document.getElementById('generatePin').addEventListener('mouseenter', function () {
-                displaynone('success', 'failure');
-            })
-            function displaynone(id1, id2) {
+            var count = 3;
+            displaynone();
+            function randomValue() {
+                displaynone();
+                var minm = 1000;
+                var maxm = 9999;
+                var answer = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
+                document.getElementById('generateInput').value = answer;
+            }
+            function displaynone() {
                 document.getElementById('success').style.display = "none";
                 document.getElementById('failure').style.display = "none";
             }
+            function displayBlock(id){
+                document.getElementById(id).style.display = "block";
+            }
             function inputreader(value) {
-                displaynone('success', 'failure');
+                displaynone();
                 var recentvalue = document.getElementById('inputPin').value;
                 var currentvalue = recentvalue + value;
                 document.getElementById('inputPin').value = currentvalue;
             }
-            document.getElementById('submitBtn').addEventListener('click', function () {
-                var count = parseInt(document.getElementById('tryingnumber').innerText);
-                console.log(count);
-                if (count > 0) {
-                    const input1 = document.getElementById('generateInput').value;
-                    const input2 = document.getElementById('inputPin').value;
-                    if (input1 == input2) {
-                        document.getElementById('success').style.display = "block";
-                    }
-                    else {
-                        document.getElementById('failure').style.display = "block";
-                    }
-                    count = count - 1;
-                    document.getElementById('tryingnumber').innerText = count;
-                }
-                else {
-                    document.getElementById('tryingnumber').innerText = 0;
-                }
-            })
             function inputdecrease() {
                 var input = document.getElementById('inputPin').value;
                 var answer = Number(input.slice(0, input.length - 1));
@@ -102,14 +90,24 @@
             function inputzero() {
                 document.getElementById('inputPin').value = "";
             }
-            function gfg() {
-                var minm = 1000;
-                var maxm = 9999;
-                var answer = Math.floor(Math.random() * (maxm - minm + 1)) + minm;
-                console.log(answer);
-                return answer;
-            } 
+            function submitBtn() {
+                if (count > 0) {
+                    const input1 = document.getElementById('generateInput').value;
+                    const input2 = document.getElementById('inputPin').value;
+                    if (input1 == input2) {
+                        displayBlock('success');
+                    }
+                    else {
+                        displayBlock('failure');
+                    }
+                    count = count - 1;
+                    document.getElementById('tryingnumber').innerText = count;
+                }
+                else {
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('tryingnumber').innerText = 0;
+                }
+            }
         </script>
 </body>
-
 </html>
